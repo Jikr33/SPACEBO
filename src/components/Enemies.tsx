@@ -88,7 +88,7 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
             clearInterval(intervalId);
          };
       }
-   }, [props.play, props.setScore, props.score]);
+   }, [props.play]);
 
    const e1 = {
       id: 'sadwad',
