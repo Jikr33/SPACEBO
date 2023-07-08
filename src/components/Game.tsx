@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Hero from '../controls';
+import React, { useEffect, useState } from 'react';
 import Bullets from './Bullets';
 import Enemies from './Enemies';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,6 +9,7 @@ const Game: React.FC = () => {
    const [highestScore, setHighestScore] = useState(10)
    const [score, setScore] = useState(0)
    const [heroSize, setHeroSize] = useState({ w: 0, h: 0 })
+   // hero position
    const [position, setPosition] = useState({ x: ((window.innerWidth / 2) - (heroSize.w / 2)), y: (window.innerHeight * 0.8) });
 
    // game is started or not.
@@ -19,7 +19,8 @@ const Game: React.FC = () => {
    const [enemies, setEnemies] = useState<Enemye[]>([])
    const speed = 4;
 
-   const [bulletSize, setBulletSize] = useState({ w: parseFloat(getComputedStyle(document.documentElement).fontSize) * 1.8, h: parseFloat(getComputedStyle(document.documentElement).fontSize) * 2 })
+   const fontSizeRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+   const [bulletSize, setBulletSize] = useState({ w: fontSizeRem * 1.8, h: fontSizeRem * 2 })
 
    useEffect(() => {
       if (highestScore < score) {
@@ -70,7 +71,7 @@ const Game: React.FC = () => {
 
 
    useEffect(() => {
-      let lastUpdateTimestamp = performance.now()
+      // let lastUpdateTimestamp = performance.now()
       if (play && (bullets.length !== 0) && (enemies.length !== 0)) {
          console.log(play, bullets, enemies)
          let eneme1 = enemies
@@ -96,6 +97,7 @@ const Game: React.FC = () => {
       }
 
    }, [enemies])
+
    const checkBulletEnemyCollision = (bullet: Bulletye, enemiess: Enemye[]): boolean => {
       if (enemiess) {
          for (const enemy of enemiess) {
@@ -103,13 +105,12 @@ const Game: React.FC = () => {
                bullet.position.x + bulletSize.w * 0.6 > enemy.position.x && bullet.position.x < enemy.position.x + (enemy.size.w * 0.85) && bullet.position.y < enemy.position.y + enemy.size.h && bullet.position.y + bulletSize.h > enemy.position.y
             ) {
                // Collision detected
-               // Handle collision logic here, such as removing the enemy or reducing its health
                setEnemies((prevEnemies) =>
                   prevEnemies.map((enemy1) =>
                      enemy1.id === enemy.id ? { ...enemy1, health: enemy1.health - 50 } : enemy1
                   )
                );
-               console.log('bullet collided', 'enemy->', enemy.id, enemiess.map((x) => x.id == enemy.id ? 'its collided' : null))
+               // console.log('bullet collided', 'enemy->', enemy.id, enemiess.map((x) => x.id == enemy.id ? 'its collided' : null))
                return true;
 
             }
@@ -121,17 +122,16 @@ const Game: React.FC = () => {
 
 
 
-   const centerOfHero = (heroSize.w / 2 - ((parseFloat(getComputedStyle(document.documentElement).fontSize) * 1.8) / 2))
+   const centerOfHero = (heroSize.w / 2 - ((fontSizeRem * 1.8) / 2))
    const shoot = () => {
       const newBullet: Bulletye = {
          id: uuidv4().slice(0, 4),
          position: { x: position.x + centerOfHero, y: position.y },
       };
-
       setBullets((prevBullets) => [...prevBullets, newBullet]);
    };
 
-   const fontSizeRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+   // starts game and removes play button.
    useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
          const { key } = event;
@@ -145,12 +145,13 @@ const Game: React.FC = () => {
       if (startButton) {
          startButton.style.display = play ? 'none' : 'block'
       }
-      console.log(heroSize)
+      // console.log(heroSize)
       window.addEventListener('keydown', handleKeyDown);
       return () => {
          window.removeEventListener('keydown', handleKeyDown);
       };
    }, [play])
+
 
    const focus = document.getElementById('gameCont')
    focus?.addEventListener("visibilitychange", () => {

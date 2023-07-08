@@ -1,6 +1,4 @@
-import { stringify } from 'querystring';
-import React, { Component, useEffect, useState } from 'react'
-import Enemy from './Enemy';
+import React, { useEffect } from 'react'
 
 import { v4 as uuidv4 } from 'uuid';
 import { EnemiesProps, Enemye } from '../types';
@@ -90,39 +88,14 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
       }
    }, [props.play]);
 
-   const e1 = {
-      id: 'sadwad',
-      position: { x: 200, y: 200 },
-      speed: 22,
-      health: 22,
-      power: 1,
-   }
-   const e2 = {
-      id: 'ddea',
-      position: { x: 500, y: 200 },
-      speed: 22,
-      health: 22,
-      power: 2,
-   }
-   const e3 = {
-      id: 'daeed',
-      position: { x: 800, y: 200 },
-      speed: 22,
-      health: 22,
-      power: 3,
-   }
    return (
       <div className='h-screen w-screen fixed top-0 left-0'>
          {props.enemies.map((enemy) => (
-            // <Enemy key={enemy.id} enemy={enemy}></Enemy>
             <div className={`enemy enemy${enemy.power}`} key={enemy.id} style={{
                left: enemy.position.x,
                top: enemy.position.y
             }}></div>
          ))}
-         {/* <Enemy key={'3333'} enemy={e1}></Enemy>
-         <Enemy key={'3333sad'} enemy={e2}></Enemy>
-         <Enemy key={'333wda3'} enemy={e3}></Enemy> */}
       </div>
    )
 

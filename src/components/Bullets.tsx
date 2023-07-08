@@ -1,9 +1,5 @@
-import React, { Component, useEffect, useRef, useState } from 'react'
-import Bullet from './Bullet'
-import { DispatchProp } from 'react-redux';
-import Enemies from './Enemies';
-import { time, timeStamp } from 'console';
-import { BulletsProps, Bulletye, Enemye } from '../types';
+import React, { useEffect } from 'react'
+import { BulletsProps } from '../types';
 
 const Bullets: React.FC<BulletsProps> = ({ bullets, setBullets, enemies, play }) => {
 
@@ -27,8 +23,6 @@ const Bullets: React.FC<BulletsProps> = ({ bullets, setBullets, enemies, play })
    //    }
 
    // }, [enemies])
-
-
 
    useEffect(() => {
       let lastUpdateTimestamp = performance.now();
@@ -79,12 +73,17 @@ const Bullets: React.FC<BulletsProps> = ({ bullets, setBullets, enemies, play })
    return (
       <div className='h-screen w-screen fixed top-0 left-0'>
          {bullets.map((bullet) => (
-            <Bullet
-               key={bullet.id}
-               topY={bullet.position.y}
-               leftX={bullet.position.x}
-               idB={bullet.id}
-            ></Bullet>
+            // <Bullet
+            //    key={bullet.id}
+            //    topY={bullet.position.y}
+            //    leftX={bullet.position.x}
+            //    idB={bullet.id}
+            // ></Bullet>
+            <div id={bullet.id} key={bullet.id} style={{
+               position: 'absolute',
+               top: bullet.position.y,
+               left: bullet.position.x,
+            }} className='bullet'></div>
          ))}
       </div>
    )
