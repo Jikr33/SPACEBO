@@ -1,0 +1,81 @@
+* {
+   margin: 0;
+}
+
+
+#gameCont {
+   width: 100vw;
+   height: 100vh;
+   background-image: url('./Assets/backgrounds/gameBackground.jpg');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+#title {
+   height: 50px;
+   left: 40%;
+   position: fixed;
+   animation: titleAnimation 4s infinite;
+   font-weight: 800;
+   font-size: 3.5rem;
+   -webkit-text-stroke-width: 1.2px;
+   -webkit-text-stroke-color: whitesmoke;
+   color: transparent;
+   font-family: 'IBM Plex Sans Hebrew', sans-serif;
+}
+
+
+#scores {
+   font-family: 'Orbitron', sans-serif;
+   font-size: 1.2rem;
+   position: fixed;
+   top: 0;
+   right: 0;
+   width: 18rem;
+   padding-top: 20px;
+   padding-right: 25px;
+   color: aliceblue;
+}
+
+#highest,
+#score {
+   display: flex;
+   justify-content: space-between;
+}
+
+@keyframes titleAnimation {
+
+   0% {
+      transform: translate(0px, 0px);
+   }
+
+   40% {
+      transform: translate(12px, 12px);
+   }
+
+   50% {
+      transform: translate(12px, 12px);
+   }
+
+   60% {
+      transform: translate(12px, 12px);
+   }
+
+   100% {
+      transform: translate(0px, 0px);
+   }
+}
+
+#hero {
+   position: absolute;
+   bottom: 5%;
+   left: 45%;
+   height: 5rem;
+   width: 7rem;
+   /* translate: 20px; */
+   background-image: url('./Assets/ships/hero.png');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+}

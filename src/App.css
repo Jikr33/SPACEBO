@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.home {
+   grid-template-columns: 1fr 1.8fr;
+   grid-template-rows: 1fr;
+   gap: 0px 0px;
+   grid-template-areas:
+      ". .";
+   background-image: url('./Assets/backgrounds/homeBackground.jpg');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+#homeTitle {
+   background-image: url('./Assets/backgrounds/homeBackground.jpg');
+   background-position: right;
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-clip: text;
+   -webkit-background-clip: text;
+   color: transparent;
+}
+
+#nameInput {
+   height: fit-content;
+   width: 14rem;
+   position: relative;
+   margin: 20px;
+}
+
+#nameIcon {
+   display: block;
+   position: absolute;
+   left: -2.6rem;
+   width: 2.3rem;
+   height: 2.3rem;
+   background-image: url('./Assets/astronaut.png');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: contain;
+}
+
+.bullet {
+   background-image: url('./Assets/ammo.jpg');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: contain;
+   width: 1.8rem;
+   height: 2rem;
+}
+
+.enemy {
+   position: absolute;
+   width: 4rem;
+   height: 3rem;
+}
+
+.enemy1 {
+   background-image: url('./Assets/ships/enemy1.png');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   width: 6rem;
+   height: 4rem;
+}
+
+.enemy2 {
+   background-image: url('./Assets/ships/enemy2.png');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   width: 5rem;
+   height: 4rem;
+}
+
+.enemy3 {
+   background-image: url('./Assets/ships/enemy3.png');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+   width: 8rem;
+   height: 5rem;
+}
+
+
+#startButton,
+#startButton2 {
+   background: #FBCA1F;
+   font-family: inherit;
+   padding: 0.6em 1.3em;
+   font-weight: 900;
+   font-size: 18px;
+   border: 3px solid black;
+   border-radius: 0.4em;
+   box-shadow: 0.1em 0.1em;
+   user-select: none;
+}
+
+#startButton:hover,
+#startButton2:hover {
+   transform: translate(-0.08em, -0.08em);
+   box-shadow: 0.15em 0.15em;
+}
+
+#startButton:active,
+#startButton2:active {
+   transform: translate(0.05em, 0.05em);
+   box-shadow: 0.05em 0.05em;
+}
