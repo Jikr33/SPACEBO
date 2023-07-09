@@ -36,3 +36,11 @@ export interface bulletProps {
    leftX: number,
    idB: string
 }
+
+export interface controllerProps {
+   position: { x: number, y: number };
+   setPosition: React.Dispatch<React.SetStateAction<{ x: number, y: number }>>;
+   speed: number;
+   heroSize: { w: number, h: number }
+}
+

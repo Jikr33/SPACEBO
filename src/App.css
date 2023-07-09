@@ -150,4 +150,52 @@
       width: 1.2rem;
       height: 1.4rem;
    }
+
+   .d-pad {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 25%;
+      height: 40%;
+      display: flex;
+      align-items: center;
+   }
+
+   .d-pad-button {
+      /* width: 2rem;
+      height: 3rem; */
+      background-color: rgba(245, 245, 220, 0.426);
+   }
+
+   .up,
+   .down {
+      height: 2rem;
+      width: 3rem;
+      position: absolute;
+      left: 35%;
+   }
+
+   .left,
+   .right {
+      height: 3rem;
+      width: 2rem;
+      position: absolute;
+      top: 30%;
+   }
+
+   .up {
+      top: 10%;
+   }
+
+   .down {
+      bottom: 10%;
+   }
+
+   .left {
+      left: 10%;
+   }
+
+   .right {
+      right: 10%;
+   }
 }

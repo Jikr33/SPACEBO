@@ -3,6 +3,7 @@ import Bullets from './Bullets';
 import Enemies from './Enemies';
 import { v4 as uuidv4 } from 'uuid';
 import { Bulletye, Enemye } from '../types';
+import DPadController from './controller';
 
 
 const Game: React.FC = () => {
@@ -211,6 +212,7 @@ const Game: React.FC = () => {
          <Bullets setBullets={setBullets} bullets={bullets} enemies={enemies} play={play}></Bullets>
          <div id='hero' style={{ position: 'absolute', top: position.y, left: position.x }}></div>
 
+         <DPadController speed={speed} heroSize={heroSize} position={position} setPosition={setPosition}></DPadController>
          <span id='startButton' className='h-14 w-22 z-10' onClick={(e) => {
             setTimeout(() => setPlay(true), 100)
          }}>Click here or press Enter</span>
