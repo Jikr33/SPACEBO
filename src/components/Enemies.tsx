@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { v4 as uuidv4 } from 'uuid';
 import { EnemiesProps, Enemye } from '../types';
 
-const Enemies: React.FC<EnemiesProps> = (props) => {
-   // const [enemies, setEnemies] = useState<Enemye[]>([])
+const Enemies: React.FC<EnemiesProps> = ({ play, heroHeight, enemies, setEnemies, setScore, score, isMobile }) => {
 
+   // const [enemies, setEnemies] = useState<Enemye[]>([])
    // const enemyPositions = [
    //    { x: 300, y: -100 },
    //    { x: 550, y: -150 },
    //    { x: 800, y: -150 },
    //    { x: 1050, y: -100 },
    // ];
+
 
 
    const generateRandomEnemyPositions = (minX: number, maxX: number) => {
@@ -39,27 +40,41 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
          }
       });
 
-      props.setEnemies((prevEnemies) => [...prevEnemies, ...newEnemies]);
+      setEnemies((prevEnemies) => [...prevEnemies, ...newEnemies]);
    };
    const enemySizer = (power: number) => {
+
       var wi = 5
       var he = 4
-      if (power === 1) {
-         wi = 6
-         he = 4
-      } else if (power === 3) {
-         wi = 8
-         he = 5
+      if (isMobile) {
+         if (power === 1) {
+            wi = 4
+            he = 3
+         } else if (power === 3) {
+            wi = 7
+            he = 4
+         }
+      }
+      else {
+         if (power === 1) {
+            wi = 6
+            he = 4
+         } else if (power === 3) {
+            wi = 8
+            he = 5
+         }
+
       }
       return { w: parseFloat(getComputedStyle(document.documentElement).fontSize) * wi, h: parseFloat(getComputedStyle(document.documentElement).fontSize) * he }
    }
 
+
    useEffect(() => {
-      if (props.play) {
+      if (play) {
          generateEnemies()
 
          // Set up the interval to generate enemies every 5 seconds
-         const intervalId = setInterval(generateEnemies, 20000);
+         const intervalId = setInterval(generateEnemies, 10000);
 
          // Clean up the interval when the component unmounts
          return () => {
@@ -67,11 +82,11 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
          };
       }
 
-   }, [props.play]);
+   }, [play]);
    useEffect(() => {
-      if (props.play) {
+      if (play) {
          const intervalId = setInterval(() => {
-            props.setEnemies((prevEnemies) =>
+            setEnemies((prevEnemies) =>
                prevEnemies
                   .map((enemy) => ({
                      ...enemy,
@@ -85,11 +100,12 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
                      if (enemy.health > 0) {
                         return true; // Render enemies with health greater than 0
                      } else {
-                        props.setScore(props.score + 10); // Call setScore for enemies with health less than 0
+                        console.log('score.', score)
+                        setScore(score + 10); // Call setScore for enemies with health less than 0
                         return false; // Exclude enemies with health less than or equal to 0 from rendering
                      }
                   })
-                  .filter((enemy) => enemy.position.y <= window.innerHeight - enemy.size.h)
+                  .filter((enemy) => enemy.position.y <= window.innerHeight + (enemy.size.h))
             );
             // console.log(enemies, window.innerHeight, window.innerHeight - props.heroHeight)
          }, 100);
@@ -98,7 +114,7 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
             clearInterval(intervalId);
          };
       }
-   }, [props.play]);
+   }, [play]);
 
    const s = [
       {
@@ -130,7 +146,7 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
 
    return (
       <div className='h-screen w-screen fixed top-0 left-0'>
-         {props.enemies.map((enemy) => (
+         {enemies.map((enemy) => (
             <div className={`enemy enemy${enemy.power}`} key={enemy.id} style={{
                left: enemy.position.x,
                top: enemy.position.y
@@ -144,6 +160,7 @@ const Enemies: React.FC<EnemiesProps> = (props) => {
          ))} */}
       </div>
    )
+
 
 }
 

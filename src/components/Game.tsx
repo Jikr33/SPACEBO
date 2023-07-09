@@ -6,10 +6,13 @@ import { Bulletye, Enemye } from '../types';
 
 
 const Game: React.FC = () => {
-   const fontSizeRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+   const [fontSizeRem, setFont] = useState(parseFloat(getComputedStyle(document.documentElement).fontSize));
+   const [isMobile, setIsMobile] = useState(false)
 
    const [highestScore, setHighestScore] = useState(10)
    const [score, setScore] = useState(0)
+
    const [heroSize, setHeroSize] = useState({ w: 7 * fontSizeRem, h: 5 * fontSizeRem })
    // hero position
    const [position, setPosition] = useState({ x: ((window.innerWidth / 2) - (heroSize.w / 2)), y: (window.innerHeight * 0.8) });
@@ -22,6 +25,7 @@ const Game: React.FC = () => {
    const speed = 4;
 
    const [bulletSize, setBulletSize] = useState({ w: fontSizeRem * 1.8, h: fontSizeRem * 2 })
+   const [centerOfHero, setCenterOfHero] = useState((heroSize.w / 2) - (bulletSize.w / 2))
 
    useEffect(() => {
       if (highestScore < score) {
@@ -33,14 +37,28 @@ const Game: React.FC = () => {
       const isMobileOrTablet = window.matchMedia("(max-width: 920px)").matches;
       const isLandscapeMode = window.matchMedia("(orientation: landscape)").matches;
 
-      if (isMobileOrTablet && isLandscapeMode) {
-         // Device is a mobile or tablet device in landscape mode
-         console.log("Mobile or tablet device in landscape mode");
-      } else {
-         // Not a mobile or tablet device or not in landscape mode
-         console.log("Not a mobile or tablet device in landscape mode");
-      }
-   }, [])
+      if (isMobileOrTablet) {
+         setFont(parseFloat(getComputedStyle(document.documentElement).fontSize))
+         setIsMobile(true)
+         setBulletSize({ w: fontSizeRem * 1.2, h: fontSizeRem * 1.4 })
+         setHeroSize({ w: 5 * fontSizeRem, h: 4 * fontSizeRem })
+         setCenterOfHero(((5 * fontSizeRem) / 2) - (fontSizeRem * 1.2) / 2)
+         if (isLandscapeMode) {
+            // Device is a mobile or tablet device in landscape mode
+            console.log("Mobile or tablet device in landscape mode");
+            const portraitWarning = document.getElementById('ifPortraitMobile')
+            if (portraitWarning) {
+               portraitWarning.style.display = 'none'
+            }
+         }
+         else {
+            const portraitWarning = document.getElementById('ifPortraitMobile')
+            if (portraitWarning) {
+               portraitWarning.style.display = 'flex'
+            }
+         }
+      } else (setIsMobile(false))
+   }, [window.innerWidth])
 
 
    useEffect(() => {
@@ -86,7 +104,7 @@ const Game: React.FC = () => {
    useEffect(() => {
       // let lastUpdateTimestamp = performance.now()
       if (play && (bullets.length !== 0) && (enemies.length !== 0)) {
-         console.log(play, bullets, enemies)
+         // console.log(play, bullets, enemies)
          let eneme1 = enemies
          // const updateBullets = (timestamp: number) => {
          //    const deltaTime = timestamp - lastUpdateTimestamp
@@ -134,8 +152,7 @@ const Game: React.FC = () => {
 
 
 
-
-   const centerOfHero = (heroSize.w / 2 - ((fontSizeRem * 1.8) / 2))
+   // const centerOfHero = (heroSize.w / 2) - (bulletSize.w / 2)
    const shoot = () => {
       const newBullet: Bulletye = {
          id: uuidv4().slice(0, 4),
@@ -190,7 +207,7 @@ const Game: React.FC = () => {
             </span>
          </div>
          {/* <Hero heroHeight={heroSize.h} heroWidth={heroSize.w} play={play}></Hero> */}
-         <Enemies score={score} setScore={setScore} play={play} heroHeight={heroSize.h} enemies={enemies} setEnemies={setEnemies}></Enemies>
+         <Enemies isMobile={isMobile} score={score} setScore={setScore} play={play} heroHeight={heroSize.h} enemies={enemies} setEnemies={setEnemies}></Enemies>
          <Bullets setBullets={setBullets} bullets={bullets} enemies={enemies} play={play}></Bullets>
          <div id='hero' style={{ position: 'absolute', top: position.y, left: position.x }}></div>
 
@@ -200,6 +217,8 @@ const Game: React.FC = () => {
          <span id='startButton2' className='h-14 w-22 z-10 hidden' onClick={(e) => {
             setTimeout(() => setPlay(true), 100)
          }}>Click here or press Enter to Resume</span>
+
+         <span id='ifPortraitMobile' className='hidden w-screen h-screen bg-slate-500/90 items-center justify-center fixed left-0 top-0 z-20 text-4xl text-ellipsis text-center'>Утсаа хэвтээгээр нь тогло</span>
       </div>
    );
 };

@@ -22,7 +22,8 @@ export interface EnemiesProps {
    enemies: Enemye[];
    setEnemies: React.Dispatch<React.SetStateAction<Enemye[]>>;
    setScore: React.Dispatch<React.SetStateAction<number>>;
-   score: number
+   score: number;
+   isMobile: boolean
 }
 export interface BulletsProps {
    bullets: Bulletye[];
