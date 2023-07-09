@@ -85,6 +85,11 @@ const Bullets: React.FC<BulletsProps> = ({ bullets, setBullets, enemies, play })
                left: bullet.position.x,
             }} className='bullet'></div>
          ))}
+         {/* <div id={'hgj'} key={'gjygj'} style={{
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+         }} className='bullet'></div> */}
       </div>
    )
 

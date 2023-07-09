@@ -18,7 +18,7 @@
    position: fixed;
    animation: titleAnimation 4s infinite;
    font-weight: 800;
-   font-size: 3.5rem;
+   font-size: 6rem;
    -webkit-text-stroke-width: 1.2px;
    -webkit-text-stroke-color: whitesmoke;
    color: transparent;
@@ -78,4 +78,35 @@
    background-position: center;
    background-repeat: no-repeat;
    background-size: cover;
+}
+
+
+@media only screen and (max-width: 920px) and (orientation: landscape) {
+
+   #title {
+      font-size: 2rem;
+   }
+
+   #scores {
+      padding-top: 10px;
+      padding-right: 10px;
+      width: 10rem;
+      font-size: 0.6rem;
+   }
+
+   #score {
+      font-size: 1.1rem;
+   }
+
+   #hero {
+      height: 4rem;
+      width: 5rem;
+   }
+
+   #startButton,
+   #startButton2 {
+      font-size: 0.8rem;
+      width: 12rem;
+      height: 2.5rem;
+   }
 }

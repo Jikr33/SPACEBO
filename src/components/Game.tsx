@@ -6,9 +6,11 @@ import { Bulletye, Enemye } from '../types';
 
 
 const Game: React.FC = () => {
+   const fontSizeRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
    const [highestScore, setHighestScore] = useState(10)
    const [score, setScore] = useState(0)
-   const [heroSize, setHeroSize] = useState({ w: 0, h: 0 })
+   const [heroSize, setHeroSize] = useState({ w: 7 * fontSizeRem, h: 5 * fontSizeRem })
    // hero position
    const [position, setPosition] = useState({ x: ((window.innerWidth / 2) - (heroSize.w / 2)), y: (window.innerHeight * 0.8) });
 
@@ -19,7 +21,6 @@ const Game: React.FC = () => {
    const [enemies, setEnemies] = useState<Enemye[]>([])
    const speed = 4;
 
-   const fontSizeRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
    const [bulletSize, setBulletSize] = useState({ w: fontSizeRem * 1.8, h: fontSizeRem * 2 })
 
    useEffect(() => {
@@ -28,6 +29,18 @@ const Game: React.FC = () => {
       }
    }, [score])
 
+   useEffect(() => {
+      const isMobileOrTablet = window.matchMedia("(max-width: 920px)").matches;
+      const isLandscapeMode = window.matchMedia("(orientation: landscape)").matches;
+
+      if (isMobileOrTablet && isLandscapeMode) {
+         // Device is a mobile or tablet device in landscape mode
+         console.log("Mobile or tablet device in landscape mode");
+      } else {
+         // Not a mobile or tablet device or not in landscape mode
+         console.log("Not a mobile or tablet device in landscape mode");
+      }
+   }, [])
 
 
    useEffect(() => {
@@ -140,7 +153,7 @@ const Game: React.FC = () => {
                setPlay(true)
          }
       }
-      setHeroSize({ w: 7 * fontSizeRem, h: 5 * fontSizeRem })
+      // setHeroSize({ w: 7 * fontSizeRem, h: 5 * fontSizeRem })
       const startButton = document.getElementById('startButton')
       if (startButton) {
          startButton.style.display = play ? 'none' : 'block'
