@@ -11,6 +11,9 @@ const Game: React.FC = () => {
    const [fontSizeRem, setFont] = useState(parseFloat(getComputedStyle(document.documentElement).fontSize));
    const [isMobile, setIsMobile] = useState(false)
 
+   const [joystickMoving, setjoystickMoving] = useState(false)
+   const [moveRate, setmoveRate] = useState({ x: 0, y: 0 })
+
    const [highestScore, setHighestScore] = useState(10)
    const [score, setScore] = useState(0)
 
@@ -44,6 +47,7 @@ const Game: React.FC = () => {
          setBulletSize({ w: fontSizeRem * 1.2, h: fontSizeRem * 1.4 })
          setHeroSize({ w: 5 * fontSizeRem, h: 4 * fontSizeRem })
          setCenterOfHero(((5 * fontSizeRem) / 2) - (fontSizeRem * 1.2) / 2)
+         setPosition({ x: ((window.innerWidth / 2) - (heroSize.w / 2)), y: (window.innerHeight * 0.8) })
          if (isLandscapeMode) {
             // Device is a mobile or tablet device in landscape mode
             console.log("Mobile or tablet device in landscape mode");
@@ -99,6 +103,21 @@ const Game: React.FC = () => {
    }, [position, play]);
 
 
+   const handleJoystickMove = () => {
+      // Calculate the new position based on joystick values
+      const newX = position.x + (moveRate.x * 3);
+      const newY = position.y + (moveRate.y * 3);
+      // Update the hero's position in the state
+      setPosition({ x: newX, y: newY });
+   };
+
+   // useEffect(() => {
+   //    if (joystickMoving) {
+   //       setInterval(() => {
+   //          handleJoystickMove()
+   //       }, 10)
+   //    }
+   // }, [joystickMoving])
 
 
 
@@ -212,7 +231,10 @@ const Game: React.FC = () => {
          <Bullets setBullets={setBullets} bullets={bullets} enemies={enemies} play={play}></Bullets>
          <div id='hero' style={{ position: 'absolute', top: position.y, left: position.x }}></div>
 
-         <DPadController speed={speed} heroSize={heroSize} position={position} setPosition={setPosition}></DPadController>
+         <DPadController handleJoystickMove={handleJoystickMove} setjoyStickMoving={setjoystickMoving} setmoveRate={setmoveRate} inactive={!play}></DPadController>
+
+         <span className='fixed right-10 bottom-10 bg-slate-400 h-8 w-24' onClick={shoot}></span>
+
          <span id='startButton' className='h-14 w-22 z-10' onClick={(e) => {
             setTimeout(() => setPlay(true), 100)
          }}>Click here or press Enter</span>
