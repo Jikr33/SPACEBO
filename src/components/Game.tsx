@@ -130,12 +130,30 @@ const Game: React.FC = () => {
         // const newY = position.y + moveRate.y * 10;
         // setPosition({ x: newX, y: newY });
 
-        setPosition((prevPosition) => ({
-          x: prevPosition.x + moveRate.x * 6,
-          y: prevPosition.y + moveRate.y * 3,
-        }));
+        setPosition((prevPosition) => {
+          //   {
+          //   x: prevPosition.x + moveRate.x * 2,
+          //   y: prevPosition.y + moveRate.y * 1,
+
+          // }
+          // Calculate the new position
+          const newX = prevPosition.x + moveRate.x * 2;
+          const newY = prevPosition.y + moveRate.y * 1;
+
+          // Check boundaries to ensure the hero stays within the window
+          const boundedX = Math.max(
+            0,
+            Math.min(newX, window.innerWidth - heroSize.w)
+          );
+          const boundedY = Math.max(
+            0,
+            Math.min(newY, window.innerHeight - heroSize.h)
+          );
+
+          return { x: boundedX, y: boundedY };
+        });
         console.log("intervad", moveRate);
-      }, 20);
+      }, 1);
 
       // console.log("moved", moveRate);
 
