@@ -1,46 +1,48 @@
 export interface HeroProps {
-   heroHeight: number;
-   heroWidth: number;
-   play: boolean
+  heroHeight: number;
+  heroWidth: number;
+  play: boolean;
 }
 export interface Bulletye {
-   id: string;
-   position: { x: number; y: number };
+  id: string;
+  position: { x: number; y: number };
 }
 export interface Enemye {
-   id: string;
-   position: { x: number; y: number };
-   speed: number;
-   health: number;
-   power: number;
-   size: { w: number; h: number }
+  id: string;
+  position: { x: number; y: number };
+  speed: number;
+  health: number;
+  power: number;
+  size: { w: number; h: number };
 }
 
 export interface EnemiesProps {
-   play: Boolean;
-   heroHeight: number;
-   enemies: Enemye[];
-   setEnemies: React.Dispatch<React.SetStateAction<Enemye[]>>;
-   setScore: React.Dispatch<React.SetStateAction<number>>;
-   score: number;
-   isMobile: boolean
+  play: Boolean;
+  heroHeight: number;
+  enemies: Enemye[];
+  setEnemies: React.Dispatch<React.SetStateAction<Enemye[]>>;
+  setScore: React.Dispatch<React.SetStateAction<number>>;
+  score: number;
+  isMobile: boolean;
 }
 export interface BulletsProps {
-   bullets: Bulletye[];
-   setBullets: React.Dispatch<React.SetStateAction<Bulletye[]>>;
-   enemies: Enemye[];
-   play: boolean
+  bullets: Bulletye[];
+  setBullets: React.Dispatch<React.SetStateAction<Bulletye[]>>;
+  enemies: Enemye[];
+  play: boolean;
 }
 export interface bulletProps {
-   topY: number,
-   leftX: number,
-   idB: string
+  topY: number;
+  leftX: number;
+  idB: string;
 }
 
 export interface controllerProps {
-   inactive: boolean,
-   setjoyStickMoving: React.Dispatch<React.SetStateAction<boolean>>,
-   setmoveRate: React.Dispatch<React.SetStateAction<{ x: number, y: number }>>,
-   handleJoystickMove: Function
+  inactive: boolean;
+  setjoyStickMoving: React.Dispatch<React.SetStateAction<boolean>>;
+  setmoveRate: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  setPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  position: { x: number; y: number };
+  joystickMoving: boolean;
+  moveRate: { x: number; y: number };
 }
-
