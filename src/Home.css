@@ -160,3 +160,28 @@ button:hover #clip {
       transform: translateX(-10px);
    }
 }
+
+
+
+#instructions {
+   width: 80%;
+   position: absolute;
+   left: 10%;
+   height: 60%;
+   bottom: 15%;
+ background-image: url('./Assets/instructions.png');  
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: contain;
+ opacity: 0.7;
+}
+
+#fireButton {
+   background-image: url('./Assets/ai.png');
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: contain;
+}
+#fireButton:active {
+   scale: 1.1;
+}

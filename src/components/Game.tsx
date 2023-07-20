@@ -4,6 +4,7 @@ import Enemies from "./Enemies";
 import { v4 as uuidv4 } from "uuid";
 import { Bulletye, Enemye } from "../types";
 import DPadController from "./controller";
+import Music from "./Music";
 
 const Game: React.FC = () => {
   const [fontSizeRem, setFont] = useState(
@@ -301,18 +302,22 @@ const Game: React.FC = () => {
           left: position.x,
         }}></div>
 
-      <DPadController
-        joystickMoving={joystickMoving}
-        moveRate={moveRate}
-        position={position}
-        setPosition={setPosition}
-        setjoyStickMoving={setjoystickMoving}
-        setmoveRate={setmoveRate}
-        inactive={!play}></DPadController>
-
-      <span
-        className="fixed right-10 bottom-10 bg-slate-400 h-8 w-24"
-        onClick={shoot}></span>
+      {isMobile ? (
+        <DPadController
+          joystickMoving={joystickMoving}
+          moveRate={moveRate}
+          position={position}
+          setPosition={setPosition}
+          setjoyStickMoving={setjoystickMoving}
+          setmoveRate={setmoveRate}
+          inactive={!play}></DPadController>
+      ) : null}
+      {isMobile ? (
+        <span
+          className="fixed right-16 bottom-10 h-24 w-24"
+          id="fireButton"
+          onClick={shoot}></span>
+      ) : null}
 
       <span
         id="startButton"
@@ -330,6 +335,8 @@ const Game: React.FC = () => {
         }}>
         Click here or press Enter to Resume
       </span>
+
+      {!play ? <div id="instructions"></div> : null}
 
       <span
         id="ifPortraitMobile"

@@ -1,10 +1,10 @@
-import React from 'react';
-import './App.css';
-import './index.css';
-import './Home.css'
-import Home from './components/Home'
-import Game from './components/Game'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import React from "react";
+import "./App.css";
+import "./index.css";
+import "./Home.css";
+import Home from "./components/Home";
+import Game from "./components/Game";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
