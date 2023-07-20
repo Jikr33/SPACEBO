@@ -243,9 +243,11 @@ const Game: React.FC = () => {
     };
     // setHeroSize({ w: 7 * fontSizeRem, h: 5 * fontSizeRem })
     const startButton = document.getElementById("startButton");
-    if (startButton) {
-      startButton.style.display = play ? "none" : "block";
-    }
+
+    // if (startButton) {
+    //   // startButton.style.display = play ? "none" : "block";
+
+    // }
     // console.log(heroSize)
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -257,18 +259,25 @@ const Game: React.FC = () => {
   focus?.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") {
       setPlay(false);
-      let s = document.getElementById("startButton2");
-      if (s !== null) {
-        s.classList.add("flex");
-      }
+      // let s = document.getElementById("startButton2");
+      // if (s !== null) {
+      //   s.classList.add("flex");
+      // }
       console.log("not visible");
     }
   });
 
+  const handle = (e: any) => {
+    let l = document.getElementById("startButton");
+    l?.classList.add("enlarge-and-disappear-animation");
+    let s = document.getElementById("instructions");
+    s?.classList.add("disappear-animation");
+  };
+
   return (
     <div
       id="gameCont"
-      className="bg-slate-500 w-full h-full flex justify-center items-center">
+      className="bg-slate-500 w-full h-full flex justify-center items-center overflow-hidden">
       <h1 id="title" className="absolute top-0">
         SPACEBO
       </h1>
@@ -319,22 +328,22 @@ const Game: React.FC = () => {
           onClick={shoot}></span>
       ) : null}
 
-      <span
-        id="startButton"
-        className="h-14 w-22 z-10"
-        onClick={(e) => {
-          setTimeout(() => setPlay(true), 100);
-        }}>
-        Click here or press Enter
-      </span>
-      <span
-        id="startButton2"
-        className="h-14 w-22 z-10 hidden"
-        onClick={(e) => {
-          setTimeout(() => setPlay(true), 100);
-        }}>
-        Click here or press Enter to Resume
-      </span>
+      {!play ? (
+        <span
+          id="startButton"
+          className="h-14 w-22 z-10"
+          onClick={(e) => {
+            setTimeout((e: any) => {
+              setPlay(true);
+              // document
+              //   .getElementById("startButton")
+              //   ?.classList.remove("enlarge-and-disappear-animation");
+            }, 1500);
+            handle(e);
+          }}>
+          Click here or press Enter
+        </span>
+      ) : null}
 
       {!play ? <div id="instructions"></div> : null}
 
