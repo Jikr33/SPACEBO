@@ -14,7 +14,7 @@
 
 #title {
    height: 50px;
-   left: 40%;
+   left: 30%;
    position: fixed;
    animation: titleAnimation 4s infinite;
    font-weight: 800;

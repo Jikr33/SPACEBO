@@ -163,28 +163,20 @@ button:hover #clip {
 
 
 .enlarge-and-disappear-animation {
-   animation: enlargeAndDisappear 1.5s linear; /* Apply the animation to the button */
+   animation: enlargeAndDisappear 1s linear; /* Apply the animation to the button */
  }
 .disappear-animation {
-   animation: Disappear 1.5s linear; /* Apply the animation to the button */
+   animation: Disappear 1s linear; /* Apply the animation to the button */
  }
 @keyframes enlargeAndDisappear {
    0% { transform: scale(1); opacity: 1; }
-   /* 10% { transform: scale(1.5); opacity: 1; }
-   20% { transform: scale(2); opacity: 1; }
-   30% { transform: scale(2.5); opacity: 1; }
-   40% { transform: scale(3); opacity: 1; } */
-   50% { transform: scale(7); opacity: 0.4; }
-   /* 60% { transform: scale(4); opacity: 1; }
-   70% { transform: scale(4.5); opacity: 1; }
-   80% { transform: scale(5); opacity: 1; }
-   90% { transform: scale(5.5); opacity: 1; } */
+   50% { transform: scale(7); opacity: 0.3; }
    100% { transform: scale(14); opacity: 0; }
  }
 @keyframes Disappear {
    
    0% { transform: scale(1);  }
-   50% { transform: scale(0.5);  }
+   50% { transform: scale(0.3);  }
    100% { transform: scale(0);  }
  }
 

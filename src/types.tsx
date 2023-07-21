@@ -38,11 +38,28 @@ export interface bulletProps {
 }
 
 export interface controllerProps {
-  inactive: boolean;
+  play: boolean;
   setjoyStickMoving: React.Dispatch<React.SetStateAction<boolean>>;
   setmoveRate: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
   setPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
   position: { x: number; y: number };
   joystickMoving: boolean;
   moveRate: { x: number; y: number };
+}
+
+export interface DesktopProps {
+  position: { x: number; y: number };
+  speed: number;
+  heroSize: { w: number; h: number };
+  shoot: Function;
+  setPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  setPlay: React.Dispatch<React.SetStateAction<boolean>>;
+  play: boolean;
+}
+export interface MobileProps {
+  heroSize: { w: number; h: number };
+  play: boolean;
+  position: { x: number; y: number };
+  shoot: Function;
+  setPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
 }

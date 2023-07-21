@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import Bullets from "./Bullets";
 import Enemies from "./Enemies";
 import { v4 as uuidv4 } from "uuid";
 import { Bulletye, Enemye } from "../types";
 import DPadController from "./controller";
-import Music from "./Music";
+import { throttle } from "lodash";
+import Mobile from "./Mobile";
+import Desktop from "./desktop";
+const lMobile = lazy(() => import("./Mobile"));
+const lDesktop = lazy(() => import("./desktop"));
 
 const Game: React.FC = () => {
   const [fontSizeRem, setFont] = useState(
@@ -12,10 +16,12 @@ const Game: React.FC = () => {
   );
   const [isMobile, setIsMobile] = useState(false);
 
-  const [joystickMoving, setjoystickMoving] = useState(false);
-  const [moveRate, setmoveRate] = useState({ x: 0, y: 0 });
+  // const [joystickMoving, setjoystickMoving] = useState(false);
+  // const [moveRate, setmoveRate] = useState({ x: 0, y: 0 });
 
-  const [highestScore, setHighestScore] = useState(10);
+  const [highestScore, setHighestScore] = useState(
+    parseInt(localStorage.getItem("highscore") || "0")
+  );
   const [score, setScore] = useState(0);
 
   const [heroSize, setHeroSize] = useState({
@@ -46,16 +52,12 @@ const Game: React.FC = () => {
   useEffect(() => {
     if (highestScore < score) {
       setHighestScore(score);
+      localStorage.setItem("highscore", String(score));
     }
   }, [score]);
 
   useEffect(() => {
-    const isMobileOrTablet = window.matchMedia("(max-width: 920px)").matches;
-    const isLandscapeMode = window.matchMedia(
-      "(orientation: landscape)"
-    ).matches;
-
-    if (isMobileOrTablet) {
+    if (window.matchMedia("(max-width: 920px)").matches) {
       setFont(parseFloat(getComputedStyle(document.documentElement).fontSize));
       setIsMobile(true);
       setBulletSize({ w: fontSizeRem * 1.2, h: fontSizeRem * 1.4 });
@@ -65,104 +67,17 @@ const Game: React.FC = () => {
         x: window.innerWidth / 2 - heroSize.w / 2,
         y: window.innerHeight * 0.8,
       });
-      if (isLandscapeMode) {
-        // Device is a mobile or tablet device in landscape mode
-        console.log("Mobile or tablet device in landscape mode");
-        const portraitWarning = document.getElementById("ifPortraitMobile");
-        if (portraitWarning) {
-          portraitWarning.style.display = "none";
-        }
-      } else {
-        const portraitWarning = document.getElementById("ifPortraitMobile");
-        if (portraitWarning) {
-          portraitWarning.style.display = "flex";
-        }
+
+      const portraitWarning = document.getElementById("ifPortraitMobile");
+      if (portraitWarning) {
+        portraitWarning.style.display = window.matchMedia(
+          "(orientation: landscape)"
+        ).matches
+          ? "none"
+          : "flex";
       }
     } else setIsMobile(false);
   }, [window.innerWidth]);
-
-  useEffect(() => {
-    if (play) {
-      const handleKeyDown = (event: KeyboardEvent) => {
-        const { key } = event;
-        const updatedPosition = { ...position };
-
-        switch (key) {
-          case "ArrowUp":
-            updatedPosition.y = Math.max(position.y - speed, 0);
-            break;
-          case "ArrowDown":
-            updatedPosition.y = Math.min(
-              position.y + speed,
-              window.innerHeight - heroSize.h
-            );
-            break;
-          case "ArrowLeft":
-            updatedPosition.x = Math.max(position.x - speed, 0);
-            break;
-          case "ArrowRight":
-            updatedPosition.x = Math.min(
-              position.x + speed,
-              window.innerWidth - heroSize.w
-            );
-            break;
-          case " ":
-            shoot();
-            setScore(score + 1);
-            break;
-          default:
-            break;
-        }
-        setPosition(updatedPosition);
-      };
-      window.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }
-  }, [position, play]);
-
-  useEffect(() => {
-    // let lastUpdateTimestamp = performance.now()
-    if (joystickMoving) {
-      const intervalId = setInterval(() => {
-        // const newX = position.x + moveRate.x * 10;
-        // const newY = position.y + moveRate.y * 10;
-        // setPosition({ x: newX, y: newY });
-
-        setPosition((prevPosition) => {
-          //   {
-          //   x: prevPosition.x + moveRate.x * 2,
-          //   y: prevPosition.y + moveRate.y * 1,
-
-          // }
-          // Calculate the new position
-          const newX = prevPosition.x + moveRate.x * 2;
-          const newY = prevPosition.y + moveRate.y * 1;
-
-          // Check boundaries to ensure the hero stays within the window
-          const boundedX = Math.max(
-            0,
-            Math.min(newX, window.innerWidth - heroSize.w)
-          );
-          const boundedY = Math.max(
-            0,
-            Math.min(newY, window.innerHeight - heroSize.h)
-          );
-
-          return { x: boundedX, y: boundedY };
-        });
-        console.log("intervad", moveRate);
-      }, 1);
-
-      // console.log("moved", moveRate);
-
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  }, [moveRate]);
 
   useEffect(() => {
     // let lastUpdateTimestamp = performance.now()
@@ -230,44 +145,133 @@ const Game: React.FC = () => {
       position: { x: position.x + centerOfHero, y: position.y },
     };
     setBullets((prevBullets) => [...prevBullets, newBullet]);
+    setScore((prevScore) => prevScore + 1);
   };
 
-  // starts game and removes play button.
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const { key } = event;
-      switch (key) {
-        case "Enter":
-          setPlay(true);
-      }
-    };
-    // setHeroSize({ w: 7 * fontSizeRem, h: 5 * fontSizeRem })
-    const startButton = document.getElementById("startButton");
+  // // starts game and removes play button.
+  // useEffect(() => {
+  //   const handleKeyDown = (event: KeyboardEvent) => {
+  //     const { key } = event;
+  //     switch (key) {
+  //       case "Enter":
+  //         setPlay(true);
+  //     }
+  //   };
+  //   // setHeroSize({ w: 7 * fontSizeRem, h: 5 * fontSizeRem })
+  //   const startButton = document.getElementById("startButton");
 
-    // if (startButton) {
-    //   // startButton.style.display = play ? "none" : "block";
+  //   // if (startButton) {
+  //   //   // startButton.style.display = play ? "none" : "block";
+  //   // }
+  //   // console.log(heroSize)
+  //   window.addEventListener("keydown", handleKeyDown);
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, [play]);
 
-    // }
-    // console.log(heroSize)
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [play]);
+  //////////////////
+  //////////////
 
-  const focus = document.getElementById("gameCont");
-  focus?.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden") {
-      setPlay(false);
-      // let s = document.getElementById("startButton2");
-      // if (s !== null) {
-      //   s.classList.add("flex");
-      // }
-      console.log("not visible");
-    }
-  });
+  // Keyboard controls for Desktop
+  // const [keys, setKeys] = useState({
+  //   w: false,
+  //   a: false,
+  //   s: false,
+  //   d: false,
+  //   " ": false,
+  // });
+  // const throttledEffect = throttle(() => {
+  //   let updatedPosition = { ...position };
 
-  const handle = (e: any) => {
+  //   // console.log("runing");
+  //   if (keys.w) {
+  //     updatedPosition.y = Math.max(position.y - speed, 0);
+  //   }
+  //   if (keys.a) {
+  //     updatedPosition.x = Math.max(position.x - speed, 0);
+  //   }
+  //   if (keys.s) {
+  //     updatedPosition.y = Math.min(
+  //       position.y + speed,
+  //       window.innerHeight - heroSize.h
+  //     );
+  //   }
+  //   if (keys.d) {
+  //     updatedPosition.x = Math.min(
+  //       position.x + speed,
+  //       window.innerWidth - heroSize.w
+  //     );
+  //   }
+  //   if (keys[" "]) {
+  //     shoot();
+  //   }
+  //   // Update position for other keys...
+  //   setPosition(updatedPosition);
+  // }, 5);
+  // useEffect(() => {
+  //   const handleKeyDown = (e: KeyboardEvent) => {
+  //     if (e.key in keys) {
+  //       setKeys((prev) => ({ ...prev, [e.key]: true }));
+  //     }
+  //   };
+  //   const handleKeyUp = (e: KeyboardEvent) => {
+  //     setKeys((prev) => ({ ...prev, [e.key]: false }));
+  //   };
+  //   window.addEventListener("keydown", handleKeyDown);
+  //   window.addEventListener("keyup", handleKeyUp);
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //     window.removeEventListener("keyup", handleKeyUp);
+  //   };
+  // }, []);
+  // const [prevKeys, setPrevKeys] = useState(keys);
+  // useEffect(() => {
+  //   setPrevKeys(keys);
+  //   console.log("keys", keys);
+  //   throttledEffect();
+  // }, [keys]);
+
+  //////////////////
+  //////////////////
+
+  // Joystick controls for mobile
+  // useEffect(() => {
+  //   // let lastUpdateTimestamp = performance.now()
+  //   if (joystickMoving) {
+  //     const intervalId = setInterval(() => {
+  //       // const newX = position.x + moveRate.x * 10;
+  //       // const newY = position.y + moveRate.y * 10;
+  //       // setPosition({ x: newX, y: newY });
+  //       setPosition((prevPosition) => {
+  //         //   {
+  //         //   x: prevPosition.x + moveRate.x * 2,
+  //         //   y: prevPosition.y + moveRate.y * 1,
+  //         // }
+  //         // Calculate the new position
+  //         const newX = prevPosition.x + moveRate.x * 2;
+  //         const newY = prevPosition.y + moveRate.y * 1;
+  //         // Check boundaries to ensure the hero stays within the window
+  //         const boundedX = Math.max(
+  //           0,
+  //           Math.min(newX, window.innerWidth - heroSize.w)
+  //         );
+  //         const boundedY = Math.max(
+  //           0,
+  //           Math.min(newY, window.innerHeight - heroSize.h)
+  //         );
+  //         return { x: boundedX, y: boundedY };
+  //       });
+  //       console.log("intervad", moveRate);
+  //     }, 1);
+  //     // console.log("moved", moveRate);
+  //     return () => {
+  //       clearInterval(intervalId);
+  //     };
+  //   }
+  // }, [moveRate]);
+
+  const handleStartButton = (e: any) => {
     let l = document.getElementById("startButton");
     l?.classList.add("enlarge-and-disappear-animation");
     let s = document.getElementById("instructions");
@@ -311,7 +315,7 @@ const Game: React.FC = () => {
           left: position.x,
         }}></div>
 
-      {isMobile ? (
+      {/* {isMobile ? (
         <DPadController
           joystickMoving={joystickMoving}
           moveRate={moveRate}
@@ -319,14 +323,37 @@ const Game: React.FC = () => {
           setPosition={setPosition}
           setjoyStickMoving={setjoystickMoving}
           setmoveRate={setmoveRate}
-          inactive={!play}></DPadController>
-      ) : null}
-      {isMobile ? (
+          play={!play}></DPadController>
+      ) : null} */}
+      {/* {isMobile ? (
         <span
           className="fixed right-16 bottom-10 h-24 w-24"
           id="fireButton"
           onClick={shoot}></span>
-      ) : null}
+      ) : null} */}
+      {/* <span
+        id="ifPortraitMobile"
+        className="hidden w-screen h-screen bg-slate-500/90 items-center justify-center fixed left-0 top-0 z-20 text-4xl text-ellipsis text-center">
+        Утсаа хэвтээгээр нь тогло
+      </span> */}
+
+      {isMobile ? (
+        <Mobile
+          play={play}
+          position={position}
+          setPosition={setPosition}
+          heroSize={heroSize}
+          shoot={shoot}></Mobile>
+      ) : (
+        <Desktop
+          play={play}
+          setPlay={setPlay}
+          position={position}
+          setPosition={setPosition}
+          speed={speed}
+          shoot={shoot}
+          heroSize={heroSize}></Desktop>
+      )}
 
       {!play ? (
         <span
@@ -335,23 +362,14 @@ const Game: React.FC = () => {
           onClick={(e) => {
             setTimeout((e: any) => {
               setPlay(true);
-              // document
-              //   .getElementById("startButton")
-              //   ?.classList.remove("enlarge-and-disappear-animation");
-            }, 1500);
-            handle(e);
+            }, 1000);
+            handleStartButton(e);
           }}>
           Click here or press Enter
         </span>
       ) : null}
 
       {!play ? <div id="instructions"></div> : null}
-
-      <span
-        id="ifPortraitMobile"
-        className="hidden w-screen h-screen bg-slate-500/90 items-center justify-center fixed left-0 top-0 z-20 text-4xl text-ellipsis text-center">
-        Утсаа хэвтээгээр нь тогло
-      </span>
     </div>
   );
 };
