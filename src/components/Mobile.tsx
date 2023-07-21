@@ -95,7 +95,7 @@ export default function Mobile({
 
       <span
         id="ifPortraitMobile"
-        className="hidden w-screen h-screen items-center justify-center fixed left-0 top-0 z-51 text-4xl text-ellipsis text-center">
+        className="landscape:hidden portrait:flex w-screen h-screen items-center justify-center fixed left-0 top-0 z-51 text-4xl text-ellipsis text-center">
         Утсаа хэвтээгээр нь тогло
       </span>
     </>

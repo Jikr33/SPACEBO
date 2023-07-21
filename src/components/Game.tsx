@@ -3,12 +3,8 @@ import Bullets from "./Bullets";
 import Enemies from "./Enemies";
 import { v4 as uuidv4 } from "uuid";
 import { Bulletye, Enemye } from "../types";
-import DPadController from "./controller";
-import { throttle } from "lodash";
 import Mobile from "./Mobile";
 import Desktop from "./desktop";
-const lMobile = lazy(() => import("./Mobile"));
-const lDesktop = lazy(() => import("./desktop"));
 
 const Game: React.FC = () => {
   const [fontSizeRem, setFont] = useState(
@@ -77,7 +73,7 @@ const Game: React.FC = () => {
           : "flex";
       }
     } else setIsMobile(false);
-  }, [window.innerWidth, play]);
+  }, [window.innerWidth]);
 
   useEffect(() => {
     // let lastUpdateTimestamp = performance.now()
