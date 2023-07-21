@@ -110,3 +110,13 @@
       height: 2.5rem;
    }
 }
+#ifPortraitMobile {
+   background-image: url('./Assets/rotate-mobile.gif');
+   background-position: center;
+   background-size:40%;
+   background-repeat: no-repeat;
+   z-index: 51;
+   background-color: rgba(0, 0, 0, 0.9);
+   padding-top: 70%;
+   color: aliceblue;
+}

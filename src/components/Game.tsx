@@ -39,7 +39,7 @@ const Game: React.FC = () => {
 
   const [bullets, setBullets] = useState<Bulletye[]>([]);
   const [enemies, setEnemies] = useState<Enemye[]>([]);
-  const speed = 4;
+  const speed = 1 * fontSizeRem;
 
   const [bulletSize, setBulletSize] = useState({
     w: fontSizeRem * 1.8,
@@ -77,7 +77,7 @@ const Game: React.FC = () => {
           : "flex";
       }
     } else setIsMobile(false);
-  }, [window.innerWidth]);
+  }, [window.innerWidth, play]);
 
   useEffect(() => {
     // let lastUpdateTimestamp = performance.now()
