@@ -154,7 +154,7 @@ const Enemies: React.FC<EnemiesProps> = ({
   ];
 
   return (
-    <div className="h-screen w-screen fixed top-0 left-0">
+    <div className="h-screen w-screen fixed top-0 left-0 z-30">
       {enemies.map((enemy) => (
         <div
           className={`enemy enemy${enemy.power}`}

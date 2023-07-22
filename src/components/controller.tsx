@@ -23,7 +23,9 @@ const DPadController: React.FC<controllerProps> = ({
   };
 
   return (
-    <span className="fixed left-0 bottom-0 flex items-center justify-center w-2/6 h-2/5 z-48">
+    <span
+      id="joyStick"
+      className="fixed left-0 bottom-0 flex items-center justify-center w-2/6 h-2/5">
       <Joystick
         disabled={play}
         size={100}

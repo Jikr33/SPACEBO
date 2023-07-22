@@ -62,4 +62,6 @@ export interface MobileProps {
   position: { x: number; y: number };
   shoot: Function;
   setPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  setShooting: React.Dispatch<React.SetStateAction<boolean>>;
+  shooting: Boolean;
 }

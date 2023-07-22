@@ -74,7 +74,7 @@ const Bullets: React.FC<BulletsProps> = ({
   // };
 
   return (
-    <div className="h-screen w-screen fixed top-0 left-0">
+    <div className="h-screen w-screen fixed top-0 left-0 z-30">
       {bullets.map((bullet) => (
         // <Bullet
         //    key={bullet.id}

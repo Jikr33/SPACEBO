@@ -4,12 +4,17 @@
 
 
 #gameCont {
+   position: fixed;
+   top: 0;
+   left: 0;
    width: 100vw;
    height: 100vh;
-   background-image: url('./Assets/backgrounds/gameBackground.jpg');
+   /* background-image: url('./Assets/backgrounds/gameBackground.jpg');
    background-position: center;
    background-repeat: no-repeat;
    background-size: cover;
+   filter:brightness(0.8) blur(1px) ; */
+   /* z-index: 0; */
 }
 
 #title {
@@ -23,6 +28,7 @@
    -webkit-text-stroke-color: whitesmoke;
    color: transparent;
    font-family: 'IBM Plex Sans Hebrew', sans-serif;
+   z-index: 10;
 }
 
 
@@ -36,6 +42,7 @@
    padding-top: 20px;
    padding-right: 25px;
    color: aliceblue;
+   z-index: 10;
 }
 
 #highest,

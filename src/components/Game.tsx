@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Bulletye, Enemye } from "../types";
 import Mobile from "./Mobile";
 import Desktop from "./desktop";
+import Stars from "./Stars";
 
 const Game: React.FC = () => {
   const [fontSizeRem, setFont] = useState(
@@ -44,6 +45,8 @@ const Game: React.FC = () => {
   const [centerOfHero, setCenterOfHero] = useState(
     heroSize.w / 2 - bulletSize.w / 2
   );
+
+  const [shooting, setShooting] = useState(false);
 
   useEffect(() => {
     if (highestScore < score) {
@@ -278,10 +281,10 @@ const Game: React.FC = () => {
     <div
       id="gameCont"
       className="bg-slate-500 w-full h-full flex justify-center items-center overflow-hidden">
-      <h1 id="title" className="absolute top-0">
+      <h1 id="title" className="absolute top-0 z-5">
         SPACEBO
       </h1>
-      <div id="scores">
+      <div id="scores" className="z-5">
         <span id="highest">
           Highest Score <h1 id="highest-score">{highestScore}</h1>
         </span>
@@ -309,6 +312,7 @@ const Game: React.FC = () => {
           position: "absolute",
           top: position.y,
           left: position.x,
+          zIndex: 40,
         }}></div>
 
       {/* {isMobile ? (
@@ -339,7 +343,9 @@ const Game: React.FC = () => {
           position={position}
           setPosition={setPosition}
           heroSize={heroSize}
-          shoot={shoot}></Mobile>
+          shoot={shoot}
+          shooting={shooting}
+          setShooting={setShooting}></Mobile>
       ) : (
         <Desktop
           play={play}
@@ -354,7 +360,7 @@ const Game: React.FC = () => {
       {!play ? (
         <span
           id="startButton"
-          className="h-14 w-22 z-10"
+          className="h-14 w-22 z-10 select-none"
           onClick={(e) => {
             setTimeout((e: any) => {
               setPlay(true);
@@ -366,6 +372,7 @@ const Game: React.FC = () => {
       ) : null}
 
       {!play ? <div id="instructions"></div> : null}
+      <Stars></Stars>
     </div>
   );
 };
