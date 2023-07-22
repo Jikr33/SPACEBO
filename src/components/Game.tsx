@@ -281,15 +281,27 @@ const Game: React.FC = () => {
     s?.classList.add("disappear-animation");
   };
 
+  const [fireSounding, setFireSounding] = useState(false);
+
   const playAudio = (audio: string) => {
-    const audioElement = new Audio(audio);
+    if (!fireSounding) {
+      const audioElement = new Audio(audio);
 
-    // Set the loop attribute to make the audio loop continuously
-    // audioElement.loop = false;
-    audioElement.volume = 0.3;
+      // Set the loop attribute to make the audio loop continuously
+      // audioElement.loop = false;
+      audioElement.volume = 0.3;
 
-    // Play the audio
-    audioElement.play();
+      // Event listener for 'ended' event
+      const handleAudioEnded = () => {
+        setFireSounding(false);
+      };
+
+      audioElement.addEventListener("ended", handleAudioEnded);
+
+      // Play the audio
+      audioElement.play();
+      setFireSounding(true);
+    }
   };
 
   return (
