@@ -6,6 +6,9 @@ import { Bulletye, Enemye } from "../types";
 import Mobile from "./Mobile";
 import Desktop from "./desktop";
 import Stars from "./Stars";
+import Music from "./Music";
+
+import fire from "../Assets/fire-1.mp3";
 
 const Game: React.FC = () => {
   const [fontSizeRem, setFont] = useState(
@@ -145,6 +148,7 @@ const Game: React.FC = () => {
     };
     setBullets((prevBullets) => [...prevBullets, newBullet]);
     setScore((prevScore) => prevScore + 1);
+    playAudio(fire);
   };
 
   // // starts game and removes play button.
@@ -277,6 +281,17 @@ const Game: React.FC = () => {
     s?.classList.add("disappear-animation");
   };
 
+  const playAudio = (audio: string) => {
+    const audioElement = new Audio(audio);
+
+    // Set the loop attribute to make the audio loop continuously
+    // audioElement.loop = false;
+    audioElement.volume = 0.3;
+
+    // Play the audio
+    audioElement.play();
+  };
+
   return (
     <div
       id="gameCont"
@@ -373,6 +388,7 @@ const Game: React.FC = () => {
 
       {!play ? <div id="instructions"></div> : null}
       <Stars></Stars>
+      <Music></Music>
     </div>
   );
 };
