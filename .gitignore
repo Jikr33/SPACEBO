@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+.env
+
 # unnecessary files
 /controls.tsx
 /components/Bullet.tsx

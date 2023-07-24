@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.2.6",
     "howler": "^2.2.3",
     "lodash": "^4.17.21",
+    "rc-table": "^7.32.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-h5-audio-player": "^3.8.6",

@@ -123,8 +123,8 @@
 
 
 #table {
-   background-color: transparent;
-   color: wheat;
+   background-color: #64646487;
+   color: rgb(255, 255, 255);
    width: 90%;
    height: fit-content;
    font-family: 'Trispace', sans-serif;
@@ -135,7 +135,25 @@
 .coloredCells {
    background-color: rgba(45, 45, 45, 0.642);
 }
+.countCell{
+   width: 3.5rem;
+}
+.nameCell{
+text-align: start;}
+.middleCell{
+   overflow: -moz-hidden-unscrollable;
+   text-align: center;
+   max-width: 10rem;
+}
+.scoreCell{
+  text-align: center;
+  font-size: 1.3rem;
+}
 
+.playerRow {
+   background-color: rgba(50, 50, 50, 0.759);
+   color: antiquewhite;
+}
 
 
 
@@ -144,6 +162,9 @@
 
 
 @media only screen and (max-width: 920px) and (orientation: portrait) {
+   .middleCell{
+      max-width: 6.5rem;
+   }
    .home {
       grid-template-columns: 1fr; 
       grid-template-rows: 2.5fr 2fr; 
@@ -170,6 +191,18 @@
    }
 }
 @media only screen and (max-width: 920px) and (orientation: landscape) {
+
+   .nameCell{
+      font-size: 0.9rem;
+   }
+.scoreCell{
+   font-size: 1rem;
+}
+.middleCell{
+   font-size: 0.8rem;
+   max-width: 9rem;
+}
+
    .home {
       grid-template-columns: 2fr 2.5fr; 
       grid-template-rows: 2.5fr; 

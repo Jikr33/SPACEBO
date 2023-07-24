@@ -23,6 +23,9 @@ const Game: React.FC = () => {
     parseInt(localStorage.getItem("highscore") || "0")
   );
   const [score, setScore] = useState(0);
+  const [player, setPlayer] = useState(
+    localStorage.getItem("playerName") || ""
+  );
 
   const [heroSize, setHeroSize] = useState({
     w: 7 * fontSizeRem,
@@ -55,6 +58,7 @@ const Game: React.FC = () => {
     if (highestScore < score) {
       setHighestScore(score);
       localStorage.setItem("highscore", String(score));
+      console.log(player);
     }
   }, [score]);
 
