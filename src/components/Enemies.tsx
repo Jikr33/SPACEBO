@@ -11,6 +11,8 @@ const Enemies: React.FC<EnemiesProps> = ({
   setScore,
   score,
   isMobile,
+  life,
+  setLife,
 }) => {
   // const [enemies, setEnemies] = useState<Enemye[]>([])
   // const enemyPositions = [
@@ -111,9 +113,14 @@ const Enemies: React.FC<EnemiesProps> = ({
                 return false; // Exclude enemies with health less than or equal to 0 from rendering
               }
             })
-            .filter(
-              (enemy) => enemy.position.y <= window.innerHeight + enemy.size.h
-            )
+            .filter((enemy) => {
+              if (!(enemy.position.y <= window.innerHeight + enemy.size.h)) {
+                setLife((prevLife) => prevLife - enemy.power * 10);
+                console.log(life, "dies");
+                return false;
+              }
+              return true;
+            })
         );
         // console.log(enemies, window.innerHeight, window.innerHeight - props.heroHeight)
       }, 100);

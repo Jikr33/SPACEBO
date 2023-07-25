@@ -24,6 +24,8 @@ export interface EnemiesProps {
   setScore: React.Dispatch<React.SetStateAction<number>>;
   score: number;
   isMobile: boolean;
+  life: number;
+  setLife: React.Dispatch<React.SetStateAction<number>>;
 }
 export interface BulletsProps {
   bullets: Bulletye[];
@@ -55,6 +57,8 @@ export interface DesktopProps {
   setPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
   setPlay: React.Dispatch<React.SetStateAction<boolean>>;
   play: boolean;
+  ended: boolean;
+  setEnded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface MobileProps {
   heroSize: { w: number; h: number };

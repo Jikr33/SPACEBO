@@ -110,8 +110,8 @@
       height: 4rem;
    }
 
-   #startButton,
-   #startButton2 {
+   .startButton,
+   .startButton2 {
       font-size: 0.8rem;
       width: 12rem;
       height: 2.5rem;

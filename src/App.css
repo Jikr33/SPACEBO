@@ -94,8 +94,8 @@
 }
 
 
-#startButton,
-#startButton2 {
+.startButton,
+.startButton2 {
    background: #FBCA1F;
    font-family: inherit;
    padding: 0.6em 1.3em;
@@ -108,14 +108,14 @@
    z-index: 50;
 }
 
-#startButton:hover,
-#startButton2:hover {
+.startButton:hover,
+.startButton2:hover {
    transform: translate(-0.08em, -0.08em);
    box-shadow: 0.15em 0.15em;
 }
 
-#startButton:active,
-#startButton2:active {
+.startButton:active,
+.startButton2:active {
    transform: translate(0.05em, 0.05em);
    box-shadow: 0.05em 0.05em;
 }

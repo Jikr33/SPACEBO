@@ -9,6 +9,7 @@ import Stars from "./Stars";
 import Music from "./Music";
 
 import fire from "../Assets/fire-1.mp3";
+import { supabaseSetHighestScore } from "../supas/supabaseSetHighestScore";
 
 const Game: React.FC = () => {
   const [fontSizeRem, setFont] = useState(
@@ -39,6 +40,10 @@ const Game: React.FC = () => {
 
   // game is started or not.
   const [play, setPlay] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [ended, setEnded] = useState(false);
+
+  const [life, setLife] = useState(100);
 
   const [bullets, setBullets] = useState<Bulletye[]>([]);
   const [enemies, setEnemies] = useState<Enemye[]>([]);
@@ -279,7 +284,7 @@ const Game: React.FC = () => {
   // }, [moveRate]);
 
   const handleStartButton = (e: any) => {
-    let l = document.getElementById("startButton");
+    let l = document.querySelector(".startButton");
     l?.classList.add("enlarge-and-disappear-animation");
     let s = document.getElementById("instructions");
     s?.classList.add("disappear-animation");
@@ -308,6 +313,17 @@ const Game: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(life, "life left");
+    if (life <= 0) {
+      setPlay(false);
+      setEnded(true);
+      supabaseSetHighestScore(player, highestScore);
+      setEnemies([]);
+      setBullets([]);
+    }
+  }, [life]);
+
   return (
     <div
       id="gameCont"
@@ -331,7 +347,9 @@ const Game: React.FC = () => {
         play={play}
         heroHeight={heroSize.h}
         enemies={enemies}
-        setEnemies={setEnemies}></Enemies>
+        setEnemies={setEnemies}
+        life={life}
+        setLife={setLife}></Enemies>
       <Bullets
         setBullets={setBullets}
         bullets={bullets}
@@ -385,13 +403,14 @@ const Game: React.FC = () => {
           setPosition={setPosition}
           speed={speed}
           shoot={shoot}
-          heroSize={heroSize}></Desktop>
+          heroSize={heroSize}
+          ended={ended}
+          setEnded={setEnded}></Desktop>
       )}
 
-      {!play ? (
+      {!play && !ended ? (
         <span
-          id="startButton"
-          className="h-14 w-22 z-10 select-none"
+          className="startButton h-14 w-22 z-10 select-none"
           onClick={(e) => {
             setTimeout((e: any) => {
               setPlay(true);
@@ -401,10 +420,37 @@ const Game: React.FC = () => {
           Click here or press Enter
         </span>
       ) : null}
+      {paused ? (
+        <span
+          className="startButton h-14 w-22 z-10 select-none"
+          onClick={(e) => {
+            setTimeout((e: any) => {
+              setPlay(true);
+            }, 1000);
+            handleStartButton(e);
+          }}>
+          Resume
+        </span>
+      ) : null}
+      {ended && !paused ? (
+        <span className="startButton h-14 w-fit z-10 select-none">
+          <button className="h-fit min-w-max mr-4 text-xl">EXIT</button>|
+          <button
+            className=" min-w-max h-fit text-xl ml-4"
+            onClick={() => {
+              setLife(100);
+              setPlay(false);
+              setEnded(false);
+              setScore(0);
+            }}>
+            Play Again...
+          </button>
+        </span>
+      ) : null}
 
-      {!play ? <div id="instructions"></div> : null}
+      {!play && !ended ? <div id="instructions"></div> : null}
       <Stars></Stars>
-      <Music></Music>
+      {/* <Music></Music> */}
     </div>
   );
 };

@@ -10,6 +10,8 @@ export default function Desktop({
   heroSize,
   setPlay,
   play,
+  ended,
+  setEnded,
 }: DesktopProps) {
   const [keys, setKeys] = useState({
     w: false,
@@ -55,9 +57,15 @@ export default function Desktop({
       if (e.key in keys) {
         setKeys((prev) => ({ ...prev, [e.key]: true }));
       }
+      if (e.key == "Escape") {
+        setEnded((prev) => !prev);
+        setPlay((prev) => !prev);
+      }
     };
     const handleKeyUp = (e: KeyboardEvent) => {
-      setKeys((prev) => ({ ...prev, [e.key]: false }));
+      if (e.key in keys) {
+        setKeys((prev) => ({ ...prev, [e.key]: false }));
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
