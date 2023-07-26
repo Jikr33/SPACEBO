@@ -6,10 +6,31 @@ import { Bulletye, Enemye } from "../types";
 import Mobile from "./Mobile";
 import Desktop from "./desktop";
 import Stars from "./Stars";
-import Music from "./Music";
 
 import fire from "../Assets/fire-1.mp3";
 import { supabaseSetHighestScore } from "../supas/supabaseSetHighestScore";
+import Settings from "./settings";
+import { Link } from "react-router-dom";
+
+import music from "../Assets/music.mp3";
+import cyber from "../Assets/cyber.mp3";
+import flight from "../Assets/flight.mp3";
+async function delayedLoop(e: any): Promise<void> {
+  const loopCount = 20; // Replace with the desired number of loop iterations
+
+  for (let i = 0; i < loopCount; i++) {
+    // Your code or logic inside the loop goes here
+    console.log(`Iteration ${i + 1}`, e.volume);
+    if (e.volume !== 0.5) {
+      e.volume = (e.volume * 100 + 5) / 100;
+    }
+
+    // Add a delay of 5 seconds before proceeding to the next iteration
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+}
+
+const bg = [music, flight, cyber];
 
 const Game: React.FC = () => {
   const [fontSizeRem, setFont] = useState(
@@ -42,6 +63,10 @@ const Game: React.FC = () => {
   const [play, setPlay] = useState(false);
   const [paused, setPaused] = useState(false);
   const [ended, setEnded] = useState(false);
+
+  let localSound = localStorage.getItem("sound") === "true" ? true : false;
+  const [sound, setSound] = useState(localSound);
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement>();
 
   const [life, setLife] = useState(100);
 
@@ -157,7 +182,9 @@ const Game: React.FC = () => {
     };
     setBullets((prevBullets) => [...prevBullets, newBullet]);
     setScore((prevScore) => prevScore + 1);
-    playAudio(fire);
+    if (sound) {
+      playAudio(fire);
+    }
   };
 
   // // starts game and removes play button.
@@ -323,6 +350,32 @@ const Game: React.FC = () => {
       setBullets([]);
     }
   }, [life]);
+  useEffect(() => {
+    if (play && paused) {
+      setPlay(false);
+    }
+  }, [paused]);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * bg.length);
+    const audioElement = new Audio(bg[randomIndex]);
+
+    if (sound) {
+      // Set the loop attribute to make the audio loop continuously
+      audioElement.loop = true;
+      audioElement.volume = 0;
+
+      // Play the audio
+      audioElement.play();
+
+      delayedLoop(audioElement);
+    }
+    // Cleanup: Stop the audio and remove the event listener on unmount
+    return () => {
+      audioElement?.pause();
+      audioElement.currentTime = 0;
+    };
+  }, []);
 
   return (
     <div
@@ -363,7 +416,6 @@ const Game: React.FC = () => {
           left: position.x,
           zIndex: 40,
         }}></div>
-
       {/* {isMobile ? (
         <DPadController
           joystickMoving={joystickMoving}
@@ -385,7 +437,6 @@ const Game: React.FC = () => {
         className="hidden w-screen h-screen bg-slate-500/90 items-center justify-center fixed left-0 top-0 z-20 text-4xl text-ellipsis text-center">
         Утсаа хэвтээгээр нь тогло
       </span> */}
-
       {isMobile ? (
         <Mobile
           play={play}
@@ -404,11 +455,11 @@ const Game: React.FC = () => {
           speed={speed}
           shoot={shoot}
           heroSize={heroSize}
-          ended={ended}
-          setEnded={setEnded}></Desktop>
+          paused={paused}
+          setPaused={setPaused}
+          ended={ended}></Desktop>
       )}
-
-      {!play && !ended ? (
+      {!play && !ended && !paused ? (
         <span
           className="startButton h-14 w-22 z-10 select-none"
           onClick={(e) => {
@@ -420,21 +471,39 @@ const Game: React.FC = () => {
           Click here or press Enter
         </span>
       ) : null}
-      {paused ? (
-        <span
-          className="startButton h-14 w-22 z-10 select-none"
-          onClick={(e) => {
-            setTimeout((e: any) => {
-              setPlay(true);
-            }, 1000);
-            handleStartButton(e);
-          }}>
-          Resume
+      {paused && !play ? (
+        <span className="startButton h-14 w-fit z-10 select-none pausedButton">
+          <Link
+            className="h-fit min-w-max mr-4 text-xl inline-block"
+            to={"/"}
+            onClick={() => {
+              setAudioElement(undefined);
+              console.log(audioElement);
+            }}>
+            EXIT
+          </Link>
+          <button
+            className="h-fit min-w-max text-xl ml-4"
+            onClick={(e) => {
+              setTimeout((e: any) => {
+                setPlay(true);
+                setPaused(false);
+              }, 500);
+              handleStartButton(e);
+            }}>
+            Resume
+          </button>
         </span>
       ) : null}
       {ended && !paused ? (
-        <span className="startButton h-14 w-fit z-10 select-none">
-          <button className="h-fit min-w-max mr-4 text-xl">EXIT</button>|
+        <span className="startButton h-14 w-fit z-10 select-none endButton">
+          {/* <button></button>| */}
+          <Link
+            className="h-fit min-w-max mr-4 text-xl inline-block"
+            to={"/"}
+            onClick={() => audioElement?.pause()}>
+            EXIT
+          </Link>
           <button
             className=" min-w-max h-fit text-xl ml-4"
             onClick={() => {
@@ -447,10 +516,14 @@ const Game: React.FC = () => {
           </button>
         </span>
       ) : null}
-
       {!play && !ended ? <div id="instructions"></div> : null}
       <Stars></Stars>
-      {/* <Music></Music> */}
+      {play && !ended && !paused ? (
+        <Settings
+          setPaused={setPaused}
+          setSound={setSound}
+          sound={sound}></Settings>
+      ) : null}
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Music from "./Music";
 import ScoreBoard from "./ScoreBoard";
 import { supabaseAddUser } from "../supas/supabaseAddUser";
 const Home: React.FC = () => {

@@ -83,7 +83,7 @@ const Enemies: React.FC<EnemiesProps> = ({
       generateEnemies();
 
       // Set up the interval to generate enemies every 5 seconds
-      const intervalId = setInterval(generateEnemies, 10000);
+      const intervalId = setInterval(generateEnemies, 5000);
 
       // Clean up the interval when the component unmounts
       return () => {

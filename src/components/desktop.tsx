@@ -10,8 +10,9 @@ export default function Desktop({
   heroSize,
   setPlay,
   play,
+  paused,
+  setPaused,
   ended,
-  setEnded,
 }: DesktopProps) {
   const [keys, setKeys] = useState({
     w: false,
@@ -57,8 +58,8 @@ export default function Desktop({
       if (e.key in keys) {
         setKeys((prev) => ({ ...prev, [e.key]: true }));
       }
-      if (e.key == "Escape") {
-        setEnded((prev) => !prev);
+      if (e.key == "Escape" && !ended) {
+        setPaused((prev) => !prev);
         setPlay((prev) => !prev);
       }
     };
@@ -69,6 +70,7 @@ export default function Desktop({
     };
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
@@ -90,11 +92,13 @@ export default function Desktop({
     };
   }, [play]);
 
-  const [prevKeys, setPrevKeys] = useState(keys);
+  // const [prevKeys, setPrevKeys] = useState(keys);
   useEffect(() => {
-    setPrevKeys(keys);
+    // setPrevKeys(keys);
     console.log("keys", keys);
-    throttledEffect();
+    if (play) {
+      throttledEffect();
+    }
   }, [keys]);
   return <></>;
 }

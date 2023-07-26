@@ -30,8 +30,8 @@ const DPadController: React.FC<controllerProps> = ({
         disabled={play}
         size={100}
         sticky={false}
-        baseColor="grey"
-        stickColor="white"
+        baseColor="#77777769"
+        stickColor="#ffffff9e"
         start={() => setjoyStickMoving(true)}
         // start={() => setmoving(true)}
         move={handleMove}

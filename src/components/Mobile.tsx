@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import DPadController from "./controller";
 import { MobileProps } from "../types";
 import { throttle } from "lodash";
+import Settings from "./settings";
 
 export default function Mobile({
   position,
@@ -59,7 +60,9 @@ export default function Mobile({
   }, [moveRate]);
 
   const handleShootStart = () => {
-    setShooting(true);
+    if (play) {
+      setShooting(true);
+    }
   };
   const handleShootEnd = () => {
     setShooting(false);
@@ -75,7 +78,7 @@ export default function Mobile({
         const deltaTime = timestamp - lastUpdateTimestamp;
         lastUpdateTimestamp = timestamp;
 
-        if (deltaTime >= 10) {
+        if (deltaTime >= 15) {
           shoot();
         }
       }
@@ -161,13 +164,11 @@ export default function Mobile({
         setjoyStickMoving={setjoystickMoving}
         setmoveRate={setmoveRate}
         play={!play}></DPadController>
-
       <span
         className="fixed right-16 bottom-10 h-24 w-24"
         id="fireButton"
         onTouchStart={handleShootStart}
         onTouchEnd={handleShootEnd}></span>
-
       <span
         id="ifPortraitMobile"
         className="landscape:hidden portrait:flex w-screen h-screen items-center justify-center fixed left-0 top-0 z-51 text-4xl text-ellipsis text-center">

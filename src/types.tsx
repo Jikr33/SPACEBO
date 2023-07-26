@@ -57,8 +57,9 @@ export interface DesktopProps {
   setPosition: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
   setPlay: React.Dispatch<React.SetStateAction<boolean>>;
   play: boolean;
+  paused: boolean;
+  setPaused: React.Dispatch<React.SetStateAction<boolean>>;
   ended: boolean;
-  setEnded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface MobileProps {
   heroSize: { w: number; h: number };
