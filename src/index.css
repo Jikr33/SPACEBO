@@ -9,12 +9,28 @@
    left: 0;
    width: 100vw;
    height: 100vh;
-   /* background-image: url('./Assets/backgrounds/gameBackground.jpg');
-   background-position: center;
-   background-repeat: no-repeat;
-   background-size: cover;
-   filter:brightness(0.8) blur(1px) ; */
+   /* background-image: url('./Assets/backgrounds/gameBackground.jpg'); */
+   /* background-position: center; */
+   /* background-repeat: no-repeat; */
+   /* background-size: cover; */
+   /* filter: blur(3px); */
+   /* filter: ; */
+   /* -webkit-backdrop-filter: brightness(0.8) blur(1px);
+   backdrop-filter: brightness(0.8) blur(1px); */
    /* z-index: 0; */
+}
+#gameCont::before {
+   content: '';
+   background-image: url('./Assets/backgrounds/gameBackground.jpg');
+   background-size: cover;
+   background-position: center;
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   top: 0;
+   left: 0;
+   filter: blur(1px); /* Adjust the blur amount as needed */
+   z-index: -1;
 }
 
 #title {

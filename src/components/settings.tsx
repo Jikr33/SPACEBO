@@ -1,4 +1,3 @@
-import { url } from "inspector";
 import React, { useEffect } from "react";
 import audioPic from "../Assets/audio.png";
 import mutePic from "../Assets/mute.png";

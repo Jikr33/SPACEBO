@@ -58,7 +58,7 @@ export default function Desktop({
       if (e.key in keys) {
         setKeys((prev) => ({ ...prev, [e.key]: true }));
       }
-      if (e.key == "Escape" && !ended) {
+      if (e.key === "Escape" && !ended) {
         setPaused((prev) => !prev);
         setPlay((prev) => !prev);
       }

@@ -21,6 +21,7 @@ button {
    border: 5px double var(--color);
    box-shadow: inset 0px 0px 15px #195480;
    -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+   clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
 }
 
 .arrow {
@@ -35,10 +36,12 @@ button {
 #la {
    left: -13.5%;
    -webkit-clip-path: polygon(100% 0, 100% 100%, 0 50%);
+   clip-path: polygon(100% 0, 100% 100%, 0 50%);
 }
 
 #ra {
    -webkit-clip-path: polygon(100% 49%, 0 0, 0 100%);
+   clip-path: polygon(100% 49%, 0 0, 0 100%);
    left: 102%;
 }
 
@@ -208,24 +211,6 @@ button:hover #clip {
 #fireButton:active {
    scale: 1.1;
 }
-
-
-
-
-#stars {
-   position: fixed;
-   top: 0;
-   left: 0;
-   height: 100vh;
-   width: 100vw;
-   background-image: url('./Assets/backgrounds/gameBackground.jpg');
-   background-position: center;
-   background-repeat: no-repeat;
-   background-size: cover;
-   filter:brightness(0.8) blur(1px) ;
-   z-index: 0;
-}
-
 
 
 

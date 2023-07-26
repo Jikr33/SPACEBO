@@ -14,7 +14,7 @@ export async function supabaseAddUser(name:string)  {
 
   if (!error) {
     console.log(userExist)
-    if (userExist?.length == 0) {
+    if (userExist?.length === 0) {
     // console.log(userExist, 'user does not exist, will try to add new user')
     // When user does not exist, user will be added to database, with 0 score.
       const { data, error } = await supabase

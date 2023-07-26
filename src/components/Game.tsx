@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Bulletye, Enemye } from "../types";
 import Mobile from "./Mobile";
 import Desktop from "./desktop";
-import Stars from "./Stars";
 
 import fire from "../Assets/fire-1.mp3";
 import { supabaseSetHighestScore } from "../supas/supabaseSetHighestScore";
@@ -375,7 +374,7 @@ const Game: React.FC = () => {
       audioElement?.pause();
       audioElement.currentTime = 0;
     };
-  }, []);
+  }, [sound]);
 
   return (
     <div
@@ -517,7 +516,6 @@ const Game: React.FC = () => {
         </span>
       ) : null}
       {!play && !ended ? <div id="instructions"></div> : null}
-      <Stars></Stars>
       {play && !ended && !paused ? (
         <Settings
           setPaused={setPaused}
